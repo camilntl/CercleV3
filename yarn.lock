@@ -1078,9 +1078,6 @@
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets":
-  version "0.1.0"
-
 "@symfony/webpack-encore@^4.0.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-4.5.0.tgz#6f8251518412e37e947100cb6daadf846cfea8dd"
