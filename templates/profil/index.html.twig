@@ -1,0 +1,58 @@
+{% embed "layouts/layout_nav.html.twig" with {
+	title: "Mon Profile"
+} %}
+	{% block main %}
+		<div class="max-w-lg">
+			<h2 class="text-3xl font-semibold dark:text-purple-300">
+				Mon Profil
+			</h2>
+			<form method="post" action="{{ path('app_profil') }}" enctype="multipart/form-data">
+				<label for="inputImage" class="cursor-pointer">
+					<img src="{{ 'images/avatar/' ~ app.user.image }}" alt="avatar" class="object-contain mb-6 h-20 w-20 rounded-full mx-auto my-10" id="imagePreview">
+					<input type="file" name="image" id="inputImage" class="hidden" accept="image/*" onchange="previewImage(this)">
+				</label>
+
+				<div class="space-y-4">
+					<div>
+						<label class="block text-purple-700 mb-2 text-xs font-medium dark:text-purple-300" for="inputNom">Nom</label>
+						<input class="border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline focus-visible:outline-purple-500 placeholder-purple-300 dark:bg-lavande-900 dark:border-lavande-900" placeholder="Nom" type="nom" name="nom" value="{{ app.user.lastname }}" id="inputnom" class="form-control" autocomplete="nom" required autofocus>
+					</div>
+					<div>
+						<label class="block text-purple-700 mb-2 text-xs font-medium dark:text-purple-300" for="inputPrenom">Prenom</label>
+						<input class="border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline focus-visible:outline-purple-500 placeholder-purple-300 dark:bg-lavande-900 dark:border-lavande-900" placeholder="Prenom" type="Prenom" value="{{ app.user.firstname }}" name="Prenom" id="inputPrenom" class="form-control" autocomplete="Prenom" required autofocus>
+					</div>
+					<div>
+						<label class="block text-purple-700 mb-2 text-xs font-medium dark:text-purple-300" for="inputDate">Email</label>
+						<input class="border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-purple-300 dark:bg-lavande-900 dark:border-lavande-900" placeholder="Email" type="Email" name="Email" id="inputEmail" class="form-control" value="{{ app.user.email }}" autocomplete="email" required autofocus>
+					</div>
+					<div>
+						<label class="block text-purple-700 mb-2 text-xs font-medium dark:text-purple-300" for="inputMdp">Changer de mot de passe</label>
+						<input class="border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900" placeholder="Mot de passe" type="password" name="password" id="inputMdp" class="form-control" autocomplete="password" autofocus>
+					</div>
+				</div>
+
+				<button class="bg-purple-500 py-3 px-8 rounded-full text-base mt-6 w-full text-white" type="submit">
+					Enregistrer les changements
+				</button>
+
+				<a href="{{ path('app_logout') }}" class="bg-purple-300 py-3 px-8 rounded-full text-base mt-6 w-full text-lavande-500 text-center" type="submit">
+						Se déconnecter
+					</a>
+				</a>
+			</form>
+		</div>
+		<script>
+			function previewImage(input) {
+var file = input.files[0];
+if (file) {
+var reader = new FileReader();
+reader.onload = function (e) {
+document.getElementById('imagePreview').src = e.target.result;
+}
+reader.readAsDataURL(file);
+}
+}
+		</script>
+
+	{% endblock %}
+{% endembed %}

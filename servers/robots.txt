@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://g4network.braquemard.fr/sitemap.xml

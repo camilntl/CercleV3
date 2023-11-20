@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+
+<div class="max-w-lg">
+    <form method="post">
+
+        <div class="px-10 space-y-8 h-screen flex flex-col justify-center">
+            <div class="w-16">
+                <img class=" h-full" src="images/logo.png"/>
+            </div>
+            <div>
+                <h2 class="text-3xl text-purple-500 mb-2 font-bold">Mot de passe</h2>
+                <h2 class="text-3xl font-bold dark:text-purple-300">Oublié</h2>
+            </div>
+
+            {% for flash_error in app.flashes('reset_password_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+
+            <div>
+                <small class="dark:text-purple-300">
+                    Entrez l’adresse mail associée avec votre compte afin de recevoir un nouveau  mot de passe
+                </small>
+            </div>
+
+            <div class="space-y-6">
+
+                {{ form_start(requestForm) }}
+                    <div>
+                        {{ form_label(requestForm.email, 'Email', {'label_attr': {'class': 'block text-purple-700 dark:text-purple-300 mb-2 text-xs font-medium'}}) }}
+                        {{ form_widget(requestForm.email, {'attr': {'class': 'border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900', 'placeholder': 'Email', 'autocomplete': 'email', 'required': 'required', 'autofocus': 'autofocus'}}) }}
+                    </div>
+
+                    <div>
+                        <button class="bg-purple-500 py-3 px-8 rounded-full text-base mb-4 w-full text-white" type="submit">
+                            Recevoir l'email
+                        </button>
+                        <p class="text-xs dark:text-purple-300">Vous connaissez votre compte ?
+                            <a class="text-purple-500" href="{{ path('app_login') }}">Connectez-vous
+                            </a>
+                        </p>
+                    </div>
+
+                {{ form_end(requestForm) }}
+
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

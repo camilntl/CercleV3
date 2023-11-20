@@ -1,0 +1,29 @@
+{# templates/chat/conversation.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Métadonnées -->
+</head>
+{% block body %}
+<body>
+<div>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button type="submit" class="btn btn-primary">Créer une conversation</button>
+{{ form_end(form) }}
+</div>
+<div id="conversations">
+    {% for conversation in conversations %}
+        <div class="conversation">
+        Conversation ID: {{ conversation.id }}
+        <a href="{{ path('chat', {'id': conversation.id}) }}" class="btn btn-primary">Aller au chat</a>
+        <!-- Afficher d'autres détails si nécessaire -->
+    </div>
+    {% else %}
+        <p>Aucune conversation trouvée.</p>
+    {% endfor %}
+</div>
+</body>
+{% endblock %}
+</html>

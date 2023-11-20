@@ -1,0 +1,7 @@
+{% set color = color|default('bg-green-100') %}
+{% set titleColor = titleColor|default('text-green-500') %}
+{% set title = title|default('') %}
+
+<div class="rounded-full px-3 py-1 {{ color }} w-fit flex items-center">
+	<p class="{{ titleColor }} text-2xs">{{ title }}</p>
+</div>

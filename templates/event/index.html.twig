@@ -1,0 +1,57 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Liste des évènements",
+    classEvenement:"bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+
+		<div class=" space-y-6 overflow-hidden">
+			<div class="flex justify-between max-w-lg">
+				<h2 class="text-3xl font-semibold dark:text-purple-200">Dernière actu du BDE</h2>
+				{% if is_granted('ROLE_BDE') %}
+					<a href="{{ path('event_new') }}">
+						{% include 'components/addBtn.html.twig' %}
+					</a>
+				{% endif %}
+			</div>
+
+			<div>
+				<a href="{{ path('app_events_view', {'id': lastEvent.id}) }}">
+					{% include 'components/cards/eventCard.html.twig' with {
+						'title': lastEvent.name,
+						'image': asset('images/' ~ lastEvent.image),
+						'image_user': asset('images/avatar/' ~ lastEvent.user.image),
+						'image_alt': 'User',
+						'username': [lastEvent.user.firstname, lastEvent.user.lastname] | join(' '),
+						'dateDeb': lastEvent.startDate|date('d/m/Y H:i'),
+						'dateFin': lastEvent.endDate|date('d/m/Y H:i'),
+						'location': lastEvent.location
+					} %}
+				</a>
+			</div>
+
+			<div class="flex justify-between items-center max-w-lg">
+				<h2 class="text-3xl font-semibold dark:text-purple-200">Événements</h2>
+				<a href="{{ path('app_events_list') }}" class="h-fit">
+					<button type="button" class="text-purple-500 text-xs font-medium">
+						Voir tout
+					</button>
+				</a>
+			</div>
+
+			<div class="overflow-x-auto overflow-y-hidden whitespace-nowrap space-x-4">
+				{% for event in events %}
+					<a href="{{ path('app_events_view', {'id': event.id}) }}">
+						{% include 'components/cards/eventCardVertical.html.twig' with {
+                        'title': event.name,
+                        'image': asset('images/' ~ event.image),
+                        'image_user': asset('images/avatar/' ~ event.user.image),
+                        'image_alt': 'Fond événements',
+                    } %}
+					</a>
+				{% endfor %}
+			</div>
+
+		</div>
+	{% endblock %}
+
+{% endembed %}

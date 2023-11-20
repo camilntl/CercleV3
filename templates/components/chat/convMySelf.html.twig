@@ -1,0 +1,9 @@
+{% set message = message|default('') %}
+{% set time = time|default('') %}
+
+<div class="flex flex-col items-end pr-2 space-y-1 mb-1">
+	<div class="py-2 px-3 rounded-full bg-purple-200 w-fit max-w-2xs" style="box-shadow: 0px 4px 4px 0px rgba(131, 8, 255, 0.02);">
+		<p class="text-xs text-purple-700 text-justify font-medium">{{ message }}</p>
+	</div>
+    <p class="text-2xs text-lavande-400">{{ time }}</p>
+</div>

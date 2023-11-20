@@ -1,0 +1,53 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Événement",
+	classEvenement:"bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+
+		<div class="space-y-6">
+			<div
+				class="flex justify-between"><!-- Contenu à ajouter entre les deux côtés si nécessaire -->
+			</div>
+
+			<div>
+				<div class="relative">
+					<div class="lg:h-80 lg:w-96">
+						<img src="{{ asset('images/' ~ event.image) }}" class="relative mt-2 w-full h-full object-cover rounded-2xl"/>
+					</div>
+
+					<div class="absolute m-0 p-0 w-full bottom-0 text-white" style="text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);">
+						<div class=" p-6 bg-gradient-to-b from-transparent to-purple-500 lg:w-96 rounded-b-2xl">
+							<p class="text-xl font-semibold mb-0">
+								{{ event.name }}
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class=" top-0 flex space-x-2 p-6 ">
+					<img src="{{ asset('images/avatar/' ~ event.user.image) }}" alt="" class="rounded-full w-7 h-7 object-cover border border-white m-0"/>
+
+					<div class="text-xs h-full">
+						<p class="text-xs font-semibold dark:text-purple-300">
+							{{ event.user.firstName }}
+							{{ event.user.lastName}}
+						</p>
+						<p class="text-2xs font-medium text-lavande-400">
+							{{ event.startDate|date('d/m/Y H:i') }}
+							-
+							{{ event.endDate|date('d/m/Y H:i') }}
+							●
+							{{ event.location }}
+						</p>
+					</div>
+
+				</div>
+                <div class="dark:bg-purple-300 p-2 rounded-lg max-w-lg">
+				    <p class="ml-6 mr-6 dark:bg-purple-300 p-2 rounded-lg">{{ event.description|raw }}</p>
+                </div>
+			</div>
+			<div class="space-y-4"></div>
+		</div>
+
+	{% endblock %}
+{% endembed %}

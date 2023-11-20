@@ -1,0 +1,38 @@
+{% set title = title|default('') %}
+{% set image = image|default('') %}
+{% set image_user = image_user|default('') %}
+{% set image_alt = image_alt|default('') %}
+{% set username = username|default('') %}
+{% set dateDeb = dateDeb|default('') %}
+{% set dateFin = dateFin|default('') %}
+{% set location = location|default('') %}
+
+<div class="relative text-white max-w-lg">
+	<div class="lg:h-80 lg:w-96">
+		<img src="{{ image }}" alt="{{ image_alt }}" class="relative rounded-2xl w-full h-full object-cover"/>
+	</div>
+	<div class="absolute top-0 flex space-x-2 p-6" style="text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.30);">
+		<img src="{{ image_user }}" alt="" class="rounded-full w-7 h-7 object-cover border border-white dark:border-purple-700"/>
+
+		<div class="text-3xs h-full">
+			<p class="text-2xs font-semibold">
+				{{ username }}
+			</p>
+			<p>
+				{{ dateDeb }}
+				-
+				{{ dateFin }}
+				●
+				{{ location }}
+			</p>
+		</div>
+	</div>
+
+	<div class="absolute bottom-0 w-full">
+		<div class="rounded-b-2xl p-6 bg-gradient-to-b from-transparent to-purple-500 w-full">
+			<p class="text-xl font-semibold h-full line-clamp-2 text-stroke">
+				{{ title }}
+			</p>
+		</div>
+	</div>
+</div>

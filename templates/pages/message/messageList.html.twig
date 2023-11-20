@@ -1,0 +1,208 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Liste des cours",
+    classMessages : "bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+
+    {% block main %}
+        <div class="flex justify-between">
+            <h2 class="text-3xl font-semibold dark:text-purple-300">Messagerie</h2>
+        </div>
+
+        <button id="openModalButton" class="bg-purple-500 py-3 px-8 rounded-full text-base mb-4 text-white w-56">Voir mes contacts</button>
+
+        <div class="hidden relative z-10" id="myModal">
+            {{ form_start(form) }}
+            <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="myOverlay"></div>
+            <div class="relative top-20 mx-auto p-5 border w-full sm:w-96 shadow-lg rounded-md bg-white">
+                <div class="mt-3 text-center">
+                    <div class="flex justify-between">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Contacts</h3>
+                        <button id="closeModalButton" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-2 px-7 py-3">
+                        <div class="contacts divide-y divide-gray-200">
+                            {% for user_form in form.users %}
+                                {% set found = false %}
+                                {% if user_form.vars.value != app.user.getId() %}
+                                    {% for user in users %}
+                                        {% if user_form.vars.value == user.getId() %}
+                                            {% set found = true %}
+                                            <div class="contact-item flex items-center justify-between py-2">
+                                                <div class="flex items-center">
+                                                    <img src="images/avatar/{{ user.getImage() }}" alt="{{ user_form.vars.label }}" class="h-10 w-10 rounded-full object-cover">
+                                                    <span class="ml-3 font-medium text-left">{{ user_form.vars.label }}</span>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" id="user_{{ user_form.vars.value }}" name="{{ user_form.vars.full_name }}" value="{{ user_form.vars.value }}" class="contact-item rounded-full mt-10"/>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not found %}
+                                        <div class="contact-item flex items-center justify-between py-2">
+                                            <div class="flex items-center">
+                                                <span class="ml-3 font-medium text-left">{{ user_form.vars.label }}</span>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" id="user_{{ user_form.vars.value }}" name="{{ user_form.vars.full_name }}" value="{{ user_form.vars.value }}" class="contact-item rounded-full mt-10"/>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary bg-purple-500 py-3 px-8 rounded-full text-base mb-4 text-white w-64">Créer une conversation</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+
+         <div class="space-y-2">
+            <h3 class="font-semibold dark:text-purple-300">Messages récents</h3>
+            <div class="space-y-2">
+                <div id="conversations">
+                    {% if conversations|length > 0 %}
+                        {% for item in conversations|reverse %}
+    <div class="conversation">
+        <a href="{{ path('chat', {'id': item.getId()}) }}" class="cursor-pointer">
+            {% set lastMessage = lastMessages[item.getId()] %}
+            {% include 'components/chat/profilCard.html.twig' with {
+                'users': item.getUsers(),
+                'time': lastMessage ? lastMessage.getDate()|date('H:i') : '',
+                'description': lastMessage ? lastMessage.getContent() : 'Aucun message'
+            } %}
+        </a>
+    </div>
+{% endfor %}
+
+
+
+
+                    {% else %}
+                        <p>Aucune conversation trouvée.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+{% endembed %}
+
+
+
+<style>/* Style de la case à cocher personnalisée */
+.custom-checkbox {
+	display: inline-block;
+	position: relative;
+	padding-left: 35px; /* Ajustez selon votre préférence pour l'espace à gauche du cercle */
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+/* Style du cercle par défaut */
+.checkmark {
+	position: absolute;
+	top: -18px;
+	left: 0;
+	height: 25px; /* Ajustez la taille du cercle selon votre préférence */
+	width: 25px; /* Ajustez la taille du cercle selon votre préférence */
+	border: 2px solid black; /* Contour noir par défaut */
+	border-radius: 50%;
+	background-color: transparent; /* Fond transparent par défaut */
+}
+
+/* Style de la coche à l'intérieur du cercle (coche unicode) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Affichez le fond et le contour violets lorsque la case à cocher est cochée */
+.custom-checkbox input:checked ~ .checkmark {
+	background-color: #8308FF; /* Fond violet */
+	border-color: #8308FF; /* Contour violet */
+}
+
+/* Affichez la coche à l'intérieur du cercle lorsque la case à cocher est cochée */
+.custom-checkbox input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style de la coche à l'intérieur du cercle (coche unicode) */
+.checkmark:after {
+	left: 7px; /* Ajustez la position de la coche à l'intérieur du cercle */
+	top: 2px; /* Ajustez la position de la coche à l'intérieur du cercle */
+	width: 8px; /* Ajustez la largeur de la coche à l'intérieur du cercle */
+	height: 15px; /* Ajustez la hauteur de la coche à l'intérieur du cercle */
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	transform: rotate(45deg); /* Rotation de la coche à 45 degrés */
+}</style><script>const openModalButton = document.getElementById('openModalButton');
+const closeModalButton = document.getElementById('closeModalButton');
+const myModal = document.getElementById('myModal');
+const myOverlay = document.getElementById('myOverlay');
+
+openModalButton.addEventListener('click', () => {
+myModal.classList.remove('hidden');
+});
+
+closeModalButton.addEventListener('click', () => {
+myModal.classList.add('hidden');
+});
+
+myOverlay.addEventListener('click', () => {
+myModal.classList.add('hidden');
+});
+
+document.querySelectorAll('.contact-item').forEach(item => {
+item.addEventListener('click', () => { // Trouver la case à cocher dans cet élément
+let checkbox = item.querySelector('input[type="checkbox"]');
+// Changer l'état de la case à cocher
+});
+});</script><style><style>/* Style pour la case à cocher circulaire */
+.checkbox:checked + .checkbox-label::before {
+	background-color: #4F46E5; /* Couleur de fond quand cochée */
+	border-color: #4F46E5; /* Couleur de la bordure quand cochée */
+}
+
+.checkbox-label {
+	position: relative;
+	padding-left: 2rem;
+	cursor: pointer;
+}
+
+.checkbox-label::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 1.25rem;
+	height: 1.25rem;
+	border: 2px solid #d1d5db; /* Couleur de la bordure */
+	border-radius: 50%; /* Rend la bordure circulaire */
+	background: white;
+}
+
+.checkbox-label::after {
+	content: '';
+	position: absolute;
+	left: 0.375rem;
+	top: calc(50% + 0.125rem);
+	transform: translateY(-50%) scale(0);
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%; /* Rend l'intérieur circulaire */
+	background: #4F46E5; /* Couleur de l'intérieur */
+	transition: transform 0.2s ease-in-out;
+}
+
+.checkbox:checked + .checkbox-label::after {
+	transform: translateY(-50%) scale(1);
+}</style></style>

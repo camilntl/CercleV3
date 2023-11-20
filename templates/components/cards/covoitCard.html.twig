@@ -1,0 +1,73 @@
+{% set image = image|default('') %}
+{% set user = user|default('') %}
+{% set locStart = locStart|default('') %}
+{% set locEnd = locEnd|default('') %}
+{% set date = date|default('') %}
+{% set price = price|default('') %}
+
+<style>
+    .round-list {
+        list-style: none;
+        padding: 0;
+        position: relative;
+    }
+
+    .round-list li {
+        position: relative;
+        margin-bottom: 16px; /* Ajustez la marge inférieure selon vos préférences */
+        display: flex;
+        align-items: center;
+    }
+
+    .round-list li::before {
+        content: '';
+        display: inline-block;
+        width: 8px; /* Ajustez le diamètre du rond selon vos préférences */
+        height: 8px; /* Ajustez le diamètre du rond selon vos préférences */
+        border: 2px solid black; /* Épaisseur et couleur du contour */
+        border-radius: 50%; /* Crée un rond en ajustant le rayon du border-radius */
+        margin-right: 8px; /* Ajustez la marge à droite du rond selon vos préférences */
+    }
+
+    .round-list .line {
+        position: absolute;
+        left: 3px; /* Ajustez la position de la ligne verticale selon vos préférences */
+        top: 50%;
+        bottom: 50%;
+        width: 2px; /* Ajustez l'épaisseur de la ligne selon vos préférences */
+        background-color: black; /* Couleur de la ligne */
+        transform: translateY(-50%); /* Centre la ligne verticalement entre les deux cercles */
+        height: 33px;
+    }
+</style>
+
+<div class="rounded-lg bg-purple-200 border border-purple-300 p-6 w-full max-w-lg dark:bg-lavande-900 text-black dark:text-white dark:border-lavande-900">
+
+    <div class="flex justify-between">
+
+        <div class="relative">
+            <ul class="round-list">
+                <li>D : {{ locStart }}</li>
+                <div class="line"></div>
+                <li>A : {{ locEnd }} </li>
+            </ul>
+        </div>
+
+        <p class="text-xl text-lavande-500 dark:text-lavande-400"> {{ price }} </p>
+
+    </div>
+
+    <div class="flex justify-between space-x-4">
+
+        <div class="flex items-center" >
+            <img src="{{ image }}" alt="" class="rounded-full w-10 h-10 object-cover border border-white dark:border-purple-700"/>
+            <p class="font-semibold ml-4"> {{ user }} </p>
+        </div>
+
+        <p class="w-20 text-end text-lavande-500 dark:text-lavande-400 font-medium"> {{ date|date('d/m/Y H:i') }} </p>
+
+    </div>
+
+</div>
+
+

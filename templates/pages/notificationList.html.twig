@@ -1,0 +1,79 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Liste des notifications",
+    classNotifications : "bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+		<h2 class="text-3xl font-semibold dark:text-purple-200">Notifications</h2>
+		<div class="flex flex-wrap gap-4 flex-col" id="notifList">
+			{% for notification in notifications %}
+				{% include 'components/notificationCard.html.twig' with {
+            'title': notification.message,
+            'user': [app.user.firstname, app.user.lastname]|join(),
+            'image_alt': '',
+            'image': 'images/icons/agile.png'
+        } %}
+				<!-- Ajout de l'élément pour récupérer le message -->
+			{% endfor %}
+		</div>
+		<div class="flex flex-col gap-3">
+			<textarea id="notification-message" name="notification-content" rows="4" placeholder="Message de la notification" class="max-w-lg border-none rounded-lg w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900"></textarea>
+			<button id="send-notification-btn" class="rounded-full bg-purple-500 py-2 px-6 text-white w-full max-w-lg mt-3">Envoyer une notification</button>
+		</div>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+document.getElementById('send-notification-btn').addEventListener('click', function () {
+var message = document.getElementById('notification-message').value;
+console.log(message);
+
+function integrateNotif(id) {
+console.log(id)
+fetch('/ajax/get-notification-template/' + id, {
+method: 'GET',
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded'
+}
+}).then(response => response.json()).then(data => {
+console.log(data);
+let element = document.getElementById('notifList')
+element.innerHTML += data;
+}).catch(error => {
+console.error(error);
+});
+
+}
+
+fetch('/ajax/send-notification', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded'
+},
+body: 'message=' + encodeURIComponent(message)
+}).then(response => response.json()).then(data => {
+console.log(data);
+Toastify({
+text: 'Notification envoyée avec succès!',
+duration: 3000,
+close: true,
+gravity: 'top', // 'top' or 'bottom'
+position: 'right', // 'left', 'center', or 'right'
+}).showToast();
+console.log(data)
+integrateNotif(data["id"])
+}).catch(error => {
+console.error(error);
+Toastify({
+text: 'Erreur lors de l\'envoi de la notification.',
+duration: 3000,
+close: true,
+gravity: 'top',
+position: 'right',
+backgroundColor: '#ff6666', // couleur de fond pour l'échec
+}).showToast();
+});
+});
+});
+		</script>
+	{% endblock %}
+{% endembed %}

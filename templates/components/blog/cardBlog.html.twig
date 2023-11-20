@@ -1,0 +1,29 @@
+{% set image = image|default('') %}
+{% set image_alt = image_alt|default('') %}
+{% set title = title|default('') %}
+{% set date = date|default('') %}
+{% set user = user|default('') %}
+{% set labelColor = labelColor|default('') %}
+{% set titleColor = titleColor|default('') %}
+{% set labelTitle = labelTitle|default('') %}
+{% set id = id|default(null) %}
+
+<a href="{{ path('app_detailBlog', {'id': id}) }}">
+	<div class="flex space-x-4">
+		<div class="max-w-lg">
+			<img src="{{ image }}" alt="{{ image_alt }}" class="rounded-2xl w-72 h-32 lg:h-48 object-cover"/>
+		</div>
+		<div class="space-y-1 self-center w-64">
+			<p class="text-xs text-lavande-400 dark:text-lavande-500">{{ date }}</p>
+			<h3 class="text-lg text-purple-700 dark:text-purple-300 font-semibold">{{ title }}</h3>
+			<div class="flex items-center justify-between">
+				<p class="text-xs text-purple-700 dark:text-purple-300 mr-3">{{ user }}</p>
+				{% include 'components/category.html.twig' with {
+                'color': labelColor,
+                'titleColor': titleColor,
+                'title': labelTitle,
+            } %}
+			</div>
+		</div>
+	</div>
+</a>

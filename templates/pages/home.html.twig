@@ -1,0 +1,52 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Liste des cours",
+	classAccueil: "bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+		<div class="flex justify-between max-w-lg">
+			<h2 class="text-3xl font-semibold dark:text-purple-200">Blog</h2>
+			<div class="self-center lg:hidden">
+				<a href="/conversation">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 stroke-purple-500">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/>
+					</svg>
+				</a>
+			</div>
+		</div>
+
+		<div class="flex space-x-2 justify-between max-w-lg">
+			{% include 'components/navigation/searchBar.html.twig' with {
+				'placeholder': 'Rechercher un article',
+				'pageValue': 'home'
+			} %}
+
+
+			<a href="{{ path('article_new') }}">
+				{% include 'components/addBtn.html.twig' %}
+			</a>
+			
+		</div>
+
+		<div class="flex flex-wrap gap-4 ">
+
+			{% for article in articles %}
+				<div class="">
+					{% include 'components/blog/cardBlog.html.twig' with {
+					'id': article.id,
+					'image': asset('images/' ~ article.image),
+					'image_alt': 'hfdhd',
+					'date': article.createdAt|date('d M Y'),
+					'title': article.title,
+					'user': [article.user.firstname, " ", article.user.lastname]|join(''),
+					'labelColor': 'bg-green-100',
+					'titleColot': 'text-green-500',
+					'labelTitle': 'Partage',
+				} %}
+				</div>
+			{% else %}
+				<p class="dark:text-purple-300">Aucun article trouvé pour votre recherche.</p>
+			{% endfor %}
+
+		</div>
+	{% endblock %}
+{% endembed %}

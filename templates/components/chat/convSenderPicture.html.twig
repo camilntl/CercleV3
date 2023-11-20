@@ -1,0 +1,20 @@
+{% set image = image|default('') %}
+{% set image_alt = image_alt|default('') %}
+{% set user = user|default('') %}
+{% set time = time|default('') %}
+{% set message = message|default('') %}
+
+<div class="flex items-start pl-2 space-y-2 space-x-2 mb-1">
+	<div class="w-10 h-10 object-cover">
+		<img class="rounded-full w-full h-full" src="{{ image }}" alt="{{ image_alt }}"/>
+	</div>
+	<div class="space-y-1">
+		<div class="space-x-1 flex">
+			<p class="text-2xs text-lavande-400">{{ user }}</p>
+			<p class="text-2xs text-lavande-400">{{ time }}</p>
+		</div>
+		<div class="py-2 px-3 rounded-2xl bg-blue-100 w-fit max-w-2xs" style="box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);">
+			<p class="text-xs text-purple-700 text-justify font-medium">{{ message }}</p>
+		</div>
+	</div>
+</div>

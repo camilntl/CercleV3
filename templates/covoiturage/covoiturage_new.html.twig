@@ -1,0 +1,46 @@
+{# templates/covoiturage/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="px-10 py-4 mt-8 h-3/4 flex flex-col justify-center max-w-lg mx-auto bg-white dark:bg-black shadow-lg rounded-lg">
+
+	<h2 class="text-3xl text-purple-500 mb-2 font-bold dark:text-purple-500">Créer un nouveau covoiturage</h2>
+
+
+	{{ form_start(form) }}
+	<div
+		class="space-y-6">
+		{# Parcourez chaque champ du formulaire et appliquez le style #}
+		{{ form_errors(form) }}
+
+		<div class="mb-4">
+			{{ form_label(form.date, 'Date', {'label_attr': {'class': 'block text-purple-700 dark:text-purple-300 mb-2 text-xs font-medium'}}) }}
+			{{ form_widget(form.date, {'attr': {'class': 'border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900'}}) }}
+		</div>
+
+		<div>
+			{{ form_label(form.departureLocation, 'Lieu de départ', {'label_attr': {'class': 'block text-purple-700 dark:text-purple-300 mb-2 text-xs font-medium'}}) }}
+			{{ form_widget(form.departureLocation, {'attr': {'class': 'border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900'}}) }}
+		</div>
+
+		<div>
+			{{ form_label(form.arrivalLocation, 'Lieu d\'arrivée', {'label_attr': {'class': 'block text-purple-700 dark:text-purple-300 mb-2 text-xs font-medium'}}) }}
+            {{ form_widget(form.arrivalLocation, {'attr': {'class': 'border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900'}}) }}
+        </div>
+
+        <div>
+            {{ form_label(form.price, 'Prix', {'label_attr': {'class': 'block text-purple-700 dark:text-purple-300 mb-2 text-xs font-medium'}}) }}
+            {{ form_widget(form.price, {'attr': {'class': 'border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 focus:outline-none focus:shadow-outline placeholder-lavande-500 dark:bg-lavande-900 dark:border-lavande-900'}}) }}
+        </div>
+
+       	<div class="flex justify-center mt-6">
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-full transition duration-300">Enregistrer</button>
+        </div>
+		<div class="text-center mt-4">
+			<a href="{{ path('app_covoiturage') }}" class="text-purple-600 hover:text-purple-700 transition duration-300">Retour à la liste des covoiturages</a>
+		</div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

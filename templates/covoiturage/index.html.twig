@@ -1,0 +1,132 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Liste des cours",
+    classCovoiturage:"bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+		<link
+		rel="stylesheet" href="{{ asset('path_to_sweetalert2.css') }}">
+		<!-- Remplacez 'path_to_sweetalert2.css' par le chemin vers le fichier CSS SweetAlert2 -->
+
+		<div class="flex justify-between max-w-lg">
+			<h2 class="text-3xl font-semibold dark:text-purple-300">Covoiturages</h2>
+			<a href="{{ path('covoiturage_new') }}">
+				{% include 'components/addBtn.html.twig' %}
+			</a>
+		</div>
+		<div class="flex space-x-2 justify-between max-w-lg">
+			{% include 'components/navigation/searchBar.html.twig' with {
+            'placeholder': 'Rechercher un trajet',
+            'pageValue': 'covoiturage'
+        } %}
+		</div>
+
+		<div>
+			<button id="afficherElement1" class=" text-black px-4 py-2 mr-1 custom-underline custom-bold dark:text-white">Trajets disponible</button>
+			<button id="afficherElement2" class=" text-black px-4 py-2 dark:text-white">Mes trajets</button>
+		</div>
+
+		<div id="element1" class="text-black px-4 py-2 mr-4 dark:text-purple-300">
+			{% for covoiturage in covoituragesAll %}
+            {% if covoiturage.user.id != currentUserId %}
+				<div class="mb-6 text-center w-full max-w-lg">
+					{% include 'components/cards/covoitCard.html.twig' with {
+                    'image': asset('images/avatar/' ~ covoiturage.user.image),
+                    'user': [covoiturage.user.firstname, covoiturage.user.lastname]|join(' '),
+                    'locStart': covoiturage.departureLocation,
+                    'locEnd': covoiturage.arrivalLocation,
+                    'date': covoiturage.date,
+                    'price': covoiturage.price ? covoiturage.price ~ '€' : 'Gratuit',
+                } %}
+					<a class=" underline" href="{{ path('create_or_join_chat', {'userId': covoiturage.user.id}) }}">
+						<button class="bg-lavande-400 text-lavande-900 rounded-lg px-4 py-2 mt-2">Discuter avec
+							{{ covoiturage.user.firstname }}</button>
+					</a>
+				</div>
+                {% endif %}
+			{% else %}
+				<p class="dark:text-purple-300">Aucun article trouvé pour votre recherche.</p>
+			{% endfor %}
+		</div>
+
+		<div id="element2" class="text-black px-4 py-2 mr-4 dark:text-purple-300" style="display: none;">
+			{% for covoiturage in covoituragesUser %}
+				<div class="mt-4 w-full text-center">
+					{% include 'components/cards/covoitCard.html.twig' with {
+                'image': asset('images/avatar/' ~ covoiturage.user.image),
+                'user': "Moi",
+                'locStart': covoiturage.departureLocation,
+                'locEnd': covoiturage.arrivalLocation,
+                'date': covoiturage.date,
+                'price': covoiturage.price ? covoiturage.price ~ '€' : 'Gratuit',
+            } %}
+
+				</div>
+				<button class="bg-red-200 text-red-700 rounded-lg px-4 py-2 mt-2" onclick="supprimerTrajet({{ covoiturage.id }})">Supprimer</button>
+			{% else %}
+				<p class="dark:text-purple-300">Aucun trajet trouvé.</p>
+			{% endfor %}
+		</div>
+
+
+	{% endblock %}
+{% endembed %}
+
+<script>
+	// JavaScript pour la logique d'échange de style des boutons
+const boutonElement1 = document.getElementById("afficherElement1");
+const boutonElement2 = document.getElementById("afficherElement2");
+
+// Lorsque le bouton 1 est cliqué
+boutonElement1.addEventListener("click", function () {
+document.getElementById("element1").style.display = "block";
+document.getElementById("element2").style.display = "none";
+
+boutonElement1.classList.add("custom-underline", "custom-bold");
+
+boutonElement2.classList.remove("custom-underline", "custom-bold");
+});
+
+// Lorsque le bouton 2 est cliqué
+boutonElement2.addEventListener("click", function () {
+document.getElementById("element1").style.display = "none";
+document.getElementById("element2").style.display = "block";
+
+boutonElement2.classList.add("custom-underline", "custom-bold");
+boutonElement1.classList.remove("custom-underline", "custom-bold");
+});
+
+
+function supprimerTrajet(trajetId) {
+if (confirm("Voulez-vous vraiment supprimer ce trajet ?")) {
+fetch(`/covoiturage/delete/${trajetId}`, {
+method: 'DELETE',
+headers: {
+'Content-Type': 'application/json',
+'X-Requested-With': 'XMLHttpRequest',
+'X-CSRF-TOKEN': '{{ csrf_token("delete") }}', // Assurez-vous d'avoir inclus le jeton CSRF dans votre template
+}
+}).then(response => {
+if (response.ok) { // Rechargez la page ou effectuez d'autres actions si nécessaire
+window.location.reload();
+} else {
+console.error('Erreur lors de la suppression du trajet.');
+}
+}).catch(error => {
+console.error('Erreur lors de la suppression du trajet :', error);
+});
+}
+}
+</script>
+
+<style type="text/css">
+	.custom-underline {
+		text-decoration: underline;
+		text-decoration-color: #7e22ce; /* un violet foncé */
+		text-underline-offset: 6px; /* augmentez cet espace selon vos préférences */
+		text-decoration-thickness: 2px; /* épaisseur du soulignement */
+	}
+
+	.custom-bold {
+		font-weight: 900; /* ou une valeur plus élevée si votre police le supporte */
+	}
+</style>

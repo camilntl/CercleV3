@@ -1,0 +1,30 @@
+{% embed "layouts/layout_nav.html.twig" with {
+	title: "Liste des évènements",
+	classEvenement:"bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+
+		<div class="flex justify-between max-w-lg">
+			<h2 class="text-3xl font-semibold dark:text-purple-300">Événements</h2>
+		</div>
+
+		<div class="flex flex-wrap justify-center lg:justify-start gap-4">
+			{% for event in events %}
+				<div class="">
+					<a href="{{ path('app_events_view', {'id': event.id}) }}">
+						{% include 'components/cards/eventCard.html.twig' with {
+							'title': event.name,
+							'image': asset('images/' ~ event.image),
+							'image_user': asset('images/avatar/' ~ event.user.image),
+							'image_alt': 'User',
+							'username': [event.user.firstname, event.user.lastname] | join(' '),
+							'dateDeb': event.startDate|date('d/m/Y H:i'),
+							'dateFin': event.endDate|date('d/m/Y H:i'),
+							'location': event.location
+						} %}
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	{% endblock %}
+{% endembed %}

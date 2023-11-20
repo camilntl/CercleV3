@@ -1,0 +1,22 @@
+{% set title = title|default('') %}
+{% set image = image|default('') %}
+{% set image_user = image_user|default('') %}
+{% set image_alt = image_alt|default('') %}
+
+<div class="w-36 inline-block border border-purple-300 dark:border-purple-700 rounded-2xl">
+    <img src="{{ image }}" alt="{{ image_alt }}" class="relative rounded-t-2xl w-full h-28 object-cover"/>
+
+    <div class="flex -mt-4 ml-3">
+
+        <div class="relative">
+            <img src="{{ image_user }}" alt="user" class="border border-white dark:border-purple-700 w-7 h-7 rounded-full object-cover"/>
+        </div>
+    
+    </div>    
+
+    <div class="rounded-b-2xl p-3 dark:bg-black h-20" style="box-shadow: 0px 4px 4px 0px rgba(131, 8, 255, 0.03);">
+        <p class="text-xs font-semibold h-full line-clamp-3 text-stroke mt-3 dark:text-purple-200">
+            {{ title }} 
+        </p>
+    </div>
+</div>

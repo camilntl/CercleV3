@@ -1,0 +1,32 @@
+{# templates/article/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="px-10 space-y-8 h-screen flex flex-col justify-center max-w-lg">
+        <div class="w-16">
+            <img class="h-full" src="{{ asset('images/logo.png') }}"/>
+        </div>
+        <div>
+            <h2 class="text-3xl text-purple-500 mb-2 font-bold dark:text-purple-500">Créer un nouvel article</h2>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="space-y-6">
+            {{ form_errors(form) }}
+            {% for field in form %}
+                <div>
+                    {{ form_label(field, null, {'label_attr': {'class': 'block text-purple-700 mb-2 text-xs font-medium dark:text-purple-300'}}) }}
+                    {{ form_widget(field, {'attr': {'class': 'border-none rounded-full w-full p-3 text-sm text-lavande-500 bg-purple-200 dark:bg-purple-300 focus:outline-none focus:shadow-outline placeholder-lavande-500'}}) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="bg-purple-500 py-3 px-8 rounded-full text-base mb-4 w-full text-white">Enregistrer l'article</button>
+            <a href="{{ path('article_list') }}" class="text-purple-500">Retour à la liste des articles</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% set time = time|default('') %}
+{% set title = title|default('') %}
+{% set desc = desc|default('') %}
+
+
+{% for event in events %}
+	<div class="border-b pb-4 border-gray-400 border-dashed max-w-lg dark:bg-purple-300 dark:rounded-lg dark:p-4 w-full">
+		<p class="text-xs font-light leading-3 text-purple-700">{{ event.startDate|date('H:i') }}</p>
+		<a tabindex="0" class="focus:outline-none text-lg font-medium leading-5 text-gray-800 mt-2">{{ event.name }}</a>
+        <div class="">
+			<p class="text-sm pt-2 text-gray-600">{{ event.description|raw }}</p>
+        </div>
+	</div>
+{% endfor %}

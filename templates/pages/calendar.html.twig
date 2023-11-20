@@ -1,0 +1,199 @@
+{% embed "layouts/layout_nav.html.twig" with {
+	title: "Calendrier",
+	classCalendrier: "bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+{% block main %}
+<h2 class="text-3xl font-semibold  dark:text-purple-200">Calendrier</h2>
+<div class="calendar max-w-lg">
+	<div class="header">
+		<div class="month">Juin 2021</div>
+		<div class="btns">
+			<!-- today -->
+			<div class="btn today">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5"
+					stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round"
+						d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+				</svg>
+			</div>
+			<!-- previous month -->
+			<div class="btn prev">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5"
+					stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+				</svg>
+			</div>
+			<!-- next month -->
+			<div class="btn next">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5"
+					stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+				</svg>
+			</div>
+		</div>
+	</div>
+	<div class="weekdays">
+		<div class="day">Dim</div>
+		<div class="day">Lun</div>
+		<div class="day">Mar</div>
+		<div class="day">Mer</div>
+		<div class="day">Jeu</div>
+		<div class="day">Ven</div>
+		<div class="day">Sam</div>
+	</div>
+	<div class="days"><!-- render days with js -->
+	</div>
+</div>
+<div class="py-5 pr-5 rounded-b">
+	<div class="content-container max-w-lg w-full space-y-4"></div>
+</div>
+
+<script>
+	let eventDates = {{ eventDates| json_encode | raw }}; 
+	const daysContainer = document.querySelector(".days");
+	const nextBtn = document.querySelector(".next");
+	const prevBtn = document.querySelector(".prev");
+	const todayBtn = document.querySelector(".today");
+	const month = document.querySelector(".month");
+
+	const months = [
+		"Janvier",
+		"Février",
+		"Mars",
+		"Avril",
+		"Mai",
+		"Juin",
+		"Juillet",
+		"Aout",
+		"Setembre",
+		"Octobre",
+		"Novembre",
+		"Decembre",
+	];
+
+	const days = [
+		"Dim",
+		"Lun",
+		"Mar",
+		"Mer",
+		"Jeu",
+		"Ven",
+		"Sam"
+	];
+
+	const date = new Date();
+	let currentMonth = date.getMonth();
+	let currentYear = date.getFullYear();
+
+	const renderCalendar = () => {
+		date.setDate(1);
+		const firstDay = new Date(currentYear, currentMonth, 1);
+		const lastDay = new Date(currentYear, currentMonth + 1, 0);
+		const lastDayIndex = lastDay.getDay();
+		const lastDayDate = lastDay.getDate();
+		const prevLastDay = new Date(currentYear, currentMonth, 0);
+		const prevLastDayDate = prevLastDay.getDate();
+		const nextDays = 7 - lastDayIndex - 1;
+
+		month.innerHTML = `${months[currentMonth]
+			} ${currentYear}`;
+
+		let days = "";
+
+		for (let x = firstDay.getDay(); x > 0; x--) {
+			days += `<div class="day prev">${prevLastDayDate - x + 1
+				}</div>`;
+		}
+
+		for (let i = 1; i <= lastDayDate; i++) {
+        let fullDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        
+        if (eventDates.includes(fullDate)) {
+            // Jour avec événement
+            if (i === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+                days += `<div class="day today event-day">${i}</div>`;
+            } else {
+                days += `<div class="day event-day">${i}</div>`;
+            }
+        } else {
+            // Jour sans événement
+            if (i === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+                days += `<div class="day today">${i}</div>`;
+            } else {
+                days += `<div class="day">${i}</div>`;
+            }
+        }
+    }
+
+		for (let j = 1; j <= nextDays; j++) {
+			days += `<div class="day next">${j}</div>`;
+		}
+
+		daysContainer.innerHTML = days;
+		hideTodayBtn();
+	};
+
+	nextBtn.addEventListener("click", () => {
+		currentMonth++;
+		if (currentMonth > 11) {
+			currentMonth = 0;
+			currentYear++;
+		}
+		renderCalendar();
+	});
+
+	prevBtn.addEventListener("click", () => {
+		currentMonth--;
+		if (currentMonth < 0) {
+			currentMonth = 11;
+			currentYear--;
+		}
+		renderCalendar();
+	});
+
+	todayBtn.addEventListener("click", () => {
+		currentMonth = date.getMonth();
+		currentYear = date.getFullYear();
+		renderCalendar();
+	});
+
+	function hideTodayBtn() {
+		if (currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+			todayBtn.style.display = "none";
+		} else {
+			todayBtn.style.display = "flex";
+		}
+	}
+
+	renderCalendar();
+
+
+	// Ajoutez cette partie pour gérer le clic sur une case du calendrier
+	const dayContainer = document.querySelector(".days");
+
+	dayContainer.addEventListener("click", (event) => {
+		if (event.target.classList.contains("day")) {
+			const selectedDate = `${currentYear}-${currentMonth + 1}-${event.target.innerText.padStart(2, '0')}`;
+			fetch(`/events/date/${selectedDate}`)
+				.then(response => response.text())
+				.then(html => {
+					document.querySelector(".content-container").innerHTML = html;
+				});
+		}
+	});
+
+</script>
+<style>
+    .event-day::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background-color: red; /* Couleur de la pastille */
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 5px;
+    }
+</style>
+
+{% endblock %}
+{% endembed %}

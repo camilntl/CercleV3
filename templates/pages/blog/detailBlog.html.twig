@@ -1,0 +1,23 @@
+{% embed "layouts/layout_nav.html.twig" with {
+    title: "Liste des cours",
+	classAccueil: "bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+    {% block main %}
+        {% if article is defined %}
+            {% include 'components/blog/detailBlog.html.twig' with {
+                'imageProfil': asset('images/' ~ article.user.image),
+                'imageProfil_alt': 'fzfez',
+                'image': asset('images/' ~ article.image),
+                'image_alt': 'fzfez',
+                'user': [article.user.firstname, article.user.lastname]| join(),
+                'labelColor': 'bg-green-100',
+                'titleColot': 'text-green-500',
+                'labelTitle': 'Partage',
+                'title': article.title,
+                'content': article.content,
+            } %}
+        {% else %}
+            <p>Aucun article trouvé.</p>
+        {% endif %}
+    {% endblock %}
+{% endembed %}

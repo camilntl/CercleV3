@@ -1,0 +1,1 @@
+UPDATE table user SET image = 'default.jpg' WHERE id = "5";

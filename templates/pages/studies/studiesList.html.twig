@@ -1,0 +1,30 @@
+{% embed "layouts/layout_nav.html.twig" with {
+	title: "Liste des cours",
+	classCours:"bg-purple-200 text-purple-500 dark:bg-purple-700 dark:text-purple-500"
+} %}
+	{% block main %}
+		<h2 class="text-3xl font-semibold dark:text-purple-200">Cours</h2>
+		<div class="flex space-x-2 justify-between max-w-lg">
+			{% include 'components/navigation/searchBar.html.twig' with {
+				'placeholder': 'Rechercher un cours'
+			} %}
+
+			{% include 'components/addBtn.html.twig' %}
+		</div>
+		<div class="flex flex-wrap gap-16">
+			{% include 'components/studies/studiesCard.html.twig' with {
+				'title': 'Méthodes agiles',
+				'user': 'BASTIN Gautier',
+				'image_alt': '',
+				'image': 'images/icons/agile.png'
+		} %}
+
+			{% include 'components/studies/studiesCard.html.twig' with {
+				'title': 'Méthodes agiles',
+				'user': 'BASTIN Gautier',
+				'image_alt': '',
+				'image': 'images/icons/agile.png'
+		} %}
+		</div>
+	{% endblock %}
+{% endembed %}

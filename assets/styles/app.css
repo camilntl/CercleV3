@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: poppins;
+}
+
+body {
+    background-color: #FEFCFF;
+}
+
+.bottomNavBtn:focus {
+    background-color: #F8F0FF;
+    color: #8308FF;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1A1A1A;
+    }
+
+    .bottomNavBtn:focus {
+        background-color: #270B44;
+        color: #8308FF;
+    }
+}

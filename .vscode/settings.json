@@ -1,0 +1,18 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "84.97.106.253",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "co-Wiki",
+            "database": "jerome_projetWiki",
+            "username": "projetWiki",
+            "password": "5OHBjv54gkhJGKf1"
+        }
+    ]
+}

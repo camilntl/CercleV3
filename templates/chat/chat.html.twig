@@ -1,0 +1,87 @@
+{# templates/chat/chat.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Métadonnées -->
+</head>
+{% block body %}
+<body>
+    <div id="chat" class="max-w-lg"></div>
+    {{ form_start(form, {'attr': {'id': 'chatForm'}}) }}
+        {{ form_row(form.content) }}
+    {{ form_end(form) }}
+
+    <script>
+document.getElementById('chatForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var messageContent = document.querySelector('#chatForm input[name="form[content]"]').value;
+    console.log(messageContent);
+    fetch('/send-message/' + {{conversation.id}}, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ message: messageContent }),
+    })
+    .then(response => {
+        console.log(response)
+        if (!response.ok) {
+            console.log(reponse.status)
+            throw new Error('Problème de réponse réseau : ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            // Traitement en cas de succès, par exemple réinitialiser le formulaire
+            console.log('Message envoyé avec succès');
+        } else {
+            // Gérer les erreurs spécifiques renvoyées par votre API
+            console.error('Erreur du serveur :', data.message);
+        }
+    })
+    .catch(error => {
+        // Gérer les erreurs de réseau ou de connexion
+        console.error('Erreur lors de l\'envoi du message :', error);
+    });
+});
+
+// Fonction de récupération des messages
+const conversationId = {{ conversation.id }};
+    function fetchMessages() {
+        fetch('/get-messages/' + conversationId )
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Problème de réponse réseau : ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(messages => {
+    const chatDiv = document.getElementById('chat');
+    chatDiv.innerHTML = ''; // Efface les anciens messages
+    messages.forEach(message => {
+        const messageElement = document.createElement('div');
+        const authorElement = document.createElement('span');
+        authorElement.textContent = 'Auteur (ID ' + message.author_id + '): ';
+        messageElement.appendChild(authorElement);
+        messageElement.appendChild(document.createTextNode(message.content));
+        chatDiv.appendChild(messageElement);
+    });
+})
+
+        .catch(error => {
+            console.error('Erreur lors de la récupération des messages :', error);
+        });
+    }
+
+    // Lancer le polling
+    setInterval(fetchMessages, 1000); // Récupère les messages toutes les 5 secondes
+
+
+    </script>
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,48 @@
+{% set users = users|default([]) %}
+{% set description = description|default('') %}
+{% set time = time|default('') %}
+{% set defaultGroupImage = asset('/images/groupe.png') %} {# Chemin de l'image par défaut pour les groupes #}
+
+<div class="flex items-center justify-between space-x-3 py-2">
+    <div class="flex items-center">
+    {% if not users is iterable%}
+
+    {# {{users.getImage()}}
+    
+    {{users.getFirstName()}} {{users.gestLastName()}} #}
+    {% else %}
+        {% if users|length > 2 %}
+            {# Afficher une image par défaut pour les conversations de groupe #}
+            <img src="{{ defaultGroupImage }}" alt="Image de groupe" class="rounded-full w-16 h-16 object-cover"/>
+            <div class="ml-3"> <p class="text-purple-700 font-semibold dark:text-purple-300">
+                {% set counter = 0 %}
+                {% for user in users %}
+                    {% if user != app.user %}
+                        {% if counter > 0 %}, {% endif %}
+                       {{ user.firstname ~ ' ' ~ user.lastname }}
+                        {% set counter = counter + 1 %}
+                        {% if counter >= 2 %}{% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if counter > 2 %}...{% endif %}</p> {# Ajouter "..." si plus de deux utilisateurs #}
+                <p class="text-xs text-lavande-400 font-medium dark:text-lavande-500">{{ description }}</p>
+            </div>
+        {% else %}
+            {# Boucle pour afficher l'image de l'autre utilisateur dans une conversation à deux #}
+            {% for user in users %}
+                {% if user != app.user %}
+                    {% set otherUserImage = asset('images/avatar/' ~ user.image) %}
+                    <img src="{{ otherUserImage }}" alt="{{ user.firstname ~ ' ' ~ user.lastname }}" class="rounded-full w-16 h-16 object-cover"/>
+                    <div class="ml-3">
+                        <p class="text-purple-700 font-semibold dark:text-purple-300">{{ user.firstname ~ ' ' ~ user.lastname }}</p>
+                        <p class="text-xs text-lavande-400 font-medium dark:text-lavande-500">{{ description }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endif %}
+    </div>
+    <div>
+        <p class="text-lavande-400 text-xs">{{ time }}</p>
+    </div>
+</div>

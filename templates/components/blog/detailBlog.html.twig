@@ -1,0 +1,33 @@
+{% set imageProfil = imageProfil|default('') %}
+{% set imageProfil_alt = imageProfil_alt|default('') %}
+{% set image = image|default('') %}
+{% set image_alt = image_alt|default('') %}
+{% set title = title|default('') %}
+{% set user = user|default('') %}
+{% set content = content|default('') %}
+{% set labelColor = labelColor|default('') %}
+{% set titleColor = titleColor|default('') %}
+{% set labelTitle = labelTitle|default('') %}
+
+<div class="p-6 space-y-6">
+	<div class="flex justify-between">
+		<div class="flex space-x-2">
+			<div class="w-6 h-6">
+				<img alt="{{ imageProfil_alt }}" src="{{ imageProfil }}" class="w-full h-full rounded-full"/>
+			</div>
+			<p class="text-2xs text-purple-700 dark:text-purple-200 self-center">{{ user }}</p>
+		</div>
+		{% include 'components/category.html.twig' with {
+                'color': labelColor,
+                'titleColor': titleColor,
+                'title': labelTitle,
+            } %}
+	</div>
+	<div class="w-full h-40">
+		<img class="w-full h-full rounded-lg object-cover" src="{{ image }}" alt="{{ image_alt }}"/>
+	</div>
+	<h2 class="text-3xl font-semibold dark:text-white">{{ title }}</h2>
+	<div class="dark:bg-purple-300 p-2 rounded-lg">
+		<p class="text-purple-700">{{ content|raw }} </p>
+	</div>
+</div>

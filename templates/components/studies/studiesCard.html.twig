@@ -1,0 +1,16 @@
+{% set title = title|default('') %}
+{% set user = user|default('') %}
+{% set image = image|default('') %}
+{% set image_alt = image_alt|default('') %}
+
+<div class="flex space-x-4 py-2 border-b-2 border-purple-200 max-w-lg">
+	<div class="inline-flex flex-col items-center justify-center w-16 h-16 rounded-2xl bg-purple-300 border-purple-200 border-8">
+		<div class="w-6 h-6">
+			<img class="w-full h-full" src="{{ image }}" alt="{{ image_alt }}"/>
+		</div>
+	</div>
+	<div class="self-center">
+		<p class="font-medium text-2xs text-purple-700">{{ title }}</p>
+		<p class="text-3xs text-lavande-400">{{ user }}</p>
+	</div>
+</div>
